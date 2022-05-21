@@ -3,8 +3,14 @@ package info1.editor.tests;
 import info1.editor.backend.File;
 
 import java.io.IOException;
+import java.nio.file.InvalidPathException;
 
 public class TestFile {
+    /**
+     * Debut du chemin menant au projet, utilisé pour construire le chemin de chaque fichier.
+     * Il faut spécifier le dossier contanant le dossier "src"
+     */
+    private static final String PATH_BASE = "" ; //""C:/Users/Clement_L/Documents/IUT/S2/programmation/eclipseWorkspace/";
 
     public static void main(String[] args) {
 
@@ -26,32 +32,40 @@ public class TestFile {
         }
 
         try {
-            File file = new File("ceci est un chemin invalide");
+            File file = new File(PATH_BASE + "ceci est un chemin invalide");
             testOk = false;
         } catch (IOException e) {
             testOk = true;
         }
 
         try {
-            File file = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierLigneSup75char.txt");
+            File file = new File(PATH_BASE + "src/main/java/info1/editor/tests/fichierexemple/testFichierLigneSup75char.txt");
             testOk &= false;
         } catch (IndexOutOfBoundsException e) {
             testOk &= true;
         } catch (IOException e) {
             testOk &= false;
-            System.out.println("Erreur lors du chargement du fichier. Vérifiez que les fichiers de tests existe bien.");
         }
 
         try {
-            File file = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierNbLigne150.txt");
+            File file = new File(PATH_BASE + "src/main/java/info1/editor/tests/fichierexemple/testFichierNbLigne150.txt");
             testOk &= false;
         } catch (IndexOutOfBoundsException e) {
             testOk &= true;
         } catch (IOException e) {
             testOk &= false;
-            System.out.println("Erreur lors du chargement du fichier. Vérifiez que les fichiers de tests existe bien.");
         }
 
         return testOk;
+    }
+
+    private static boolean testSave() {
+        try {
+            File file = new File(PATH_BASE + "src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
+        } catch (IOException e) {
+            System.out.println("Erreur lors du chargement du fichier. Vérifiez que les fichiers de tests existe bien.");
+        }
+
+        return false;
     }
 }
