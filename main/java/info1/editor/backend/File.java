@@ -3,6 +3,7 @@ package info1.editor.backend;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 public class File {
 
@@ -11,6 +12,7 @@ public class File {
 
     private Path path;
     private String[] content;
+    private int currentLine;
 
     /**
      * Creates a new file with the given path.
@@ -20,16 +22,12 @@ public class File {
     public File(String path) throws IOException {
 
         java.io.File file = new java.io.File(path);
-
         this.path = Path.of(path);
-
-        file = file.getCanonicalFile();
 
         if (!file.exists()) {
             throw new IOException("File not found");
         }
         this.content = loadFile(this.path);
-
     }
 
     /**
@@ -43,12 +41,14 @@ public class File {
      */
     private String[] loadFile(Path filePath) throws IOException {
 
-        String[] lines;
-        lines = new String[(int) Files.lines(filePath).count()];
-
-        if (lines.length > MAX_LINES) {
+        this.currentLine = (int) Files.lines(filePath).count();
+        if (this.currentLine > MAX_LINES + 1) {
             throw new IndexOutOfBoundsException("Le fichier excède 100 lignes");
         }
+
+        String[] lines = new String[MAX_LINES];
+        Arrays.fill(lines, null);
+
         int lineIndex = 0;
 
         FileReader fr = new FileReader(filePath.toFile());
@@ -67,6 +67,7 @@ public class File {
         return lines;
     }
 
+    //TODO : ajouter les tests
     public void save() throws IOException {
         PrintWriter newFile = new PrintWriter(path.toString());
 
@@ -75,7 +76,35 @@ public class File {
         for (int i = 1 ; i < content.length ; i++) {
             newFile.print("\n" + content[i]);
         }
-
         newFile.close();
+    }
+
+    /**
+     * Delete the line at specified index and shift the other lines.
+     * @param idLine the index of the line to delete
+     * @throws NullPointerException If the specified index is out of bounds
+     */
+    public void delete(int idLine) throws NullPointerException {
+        if (idLine < 0 || idLine > this.currentLine) {
+            throw new NullPointerException("Index out of bounds");
+        }
+
+        int lineIndex;
+
+        if (idLine == MAX_LINES - 1) {
+            this.content[idLine] = null;
+        } else {
+            for (lineIndex = idLine ; lineIndex < this.content.length && this.content[lineIndex] != null; lineIndex++) {
+                this.content[lineIndex] = this.content[lineIndex + 1];
+            }
+
+            this.content[lineIndex] = null;
+            this.currentLine--;
+        }
+
+    }
+
+    public String[] getContent() {
+        return Arrays.copyOf(this.content, MAX_LINES);
     }
 }
