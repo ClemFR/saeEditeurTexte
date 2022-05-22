@@ -104,6 +104,29 @@ public class File {
 
     }
 
+    /**
+     * Delete all lines included in the specified range.
+     * @param start start of the range
+     * @param end end of the range
+     * @throws NullPointerException If the specified range is out of bounds
+     */
+    public void delete(int start, int end) {
+        if (start < 0 || start > this.currentLine || end < 0 || end > this.currentLine || start > end) {
+            throw new NullPointerException("Index out of bounds");
+        }
+
+        int linesDeleted = end - start + 1;
+        int lineIndex;
+        for (int i = start ; i <= end ; i++) {
+            this.content[i] = null;
+        }
+
+        for (lineIndex = end + 1 ; lineIndex < this.content.length && this.content[lineIndex] != null; lineIndex++) {
+            this.content[lineIndex - linesDeleted] = this.content[lineIndex];
+            this.content[lineIndex] = null;
+        }
+    }
+
     public String[] getContent() {
         return Arrays.copyOf(this.content, MAX_LINES);
     }
