@@ -125,8 +125,29 @@ public class File {
             this.content[lineIndex - linesDeleted] = this.content[lineIndex];
             this.content[lineIndex] = null;
         }
+        this.currentLine = this.currentLine - linesDeleted;
     }
 
+    /**
+     * Insert the specified text after the specified line.
+     * @param line the line to insert the text
+     * @param text the text to insert
+     * @throws NullPointerException If the specified line is out of bounds
+     */
+    public void append(int line, String text) {
+        if (line < 0 || line > this.currentLine) {
+            throw new NullPointerException("Index out of bounds");
+        }
+
+
+        this.content[line] = text;
+        this.currentLine++;
+    }
+
+    /**
+     * Get the file in an array list
+     * @return the file in an array list
+     */
     public String[] getContent() {
         return Arrays.copyOf(this.content, MAX_LINES);
     }
