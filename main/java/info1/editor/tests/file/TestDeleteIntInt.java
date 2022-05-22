@@ -132,7 +132,7 @@ public class TestDeleteIntInt {
         } catch (IOException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
-        } catch (NullPointerException erreurAttendue) {
+        } catch (NullPointerException expectedError) {
             testOk &= true;
         }
 
@@ -143,7 +143,7 @@ public class TestDeleteIntInt {
         } catch (IOException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
-        } catch (NullPointerException erreurAttendue) {
+        } catch (NullPointerException expectedError) {
             testOk &= true;
         }
 
@@ -154,7 +154,7 @@ public class TestDeleteIntInt {
         } catch (IOException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
-        } catch (NullPointerException erreurAttendue) {
+        } catch (NullPointerException expectedError) {
             testOk &= true;
         }
 

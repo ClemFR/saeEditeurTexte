@@ -133,14 +133,24 @@ public class File {
      * @param line the line to insert the text
      * @param text the text to insert
      * @throws NullPointerException If the specified line is out of bounds
+     * @throws IndexOutOfBoundsException If the specified text is too long or if the file
+     *                                   is at max line size
      */
     public void append(int line, String text) {
         if (line < 0 || line > this.currentLine) {
             throw new NullPointerException("Index out of bounds");
         }
+        if (this.currentLine == MAX_LINES - 1) {
+            throw new IndexOutOfBoundsException("File at max line size");
+        }
+        if (text.length() > MAX_CHAR) {
+            throw new IndexOutOfBoundsException("75 char max");
+        }
 
-
-        this.content[line] = text;
+        for (int i = this.currentLine ; i > line + 1 ; i--) {
+            this.content[i] = this.content[i - 1];
+        }
+        this.content[line + 1] = text;
         this.currentLine++;
     }
 

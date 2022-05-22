@@ -31,5 +31,11 @@ public class StartTest {
         } else {
             System.out.println("Test deleteIntInt ECHEC");
         }
+
+        if (TestAppend.launch()) {
+            System.out.println("Test append OK");
+        } else {
+            System.out.println("Test append ECHEC");
+        }
     }
 }
