@@ -12,7 +12,7 @@
 
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="info1.editor.gui.Editor">
+            fx:controller="info1.editor.gui.EditorController">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -25,9 +25,9 @@
                <children>
                   <FlowPane alignment="CENTER" hgap="15.0" prefHeight="26.0" prefWidth="376.0">
                      <children>
-                        <Button mnemonicParsing="false" text="?" />
-                        <TextField />
-                        <Button mnemonicParsing="false" text="Send" />
+                        <Button mnemonicParsing="false" text="?" onAction="#onHelpAction"/>
+                        <TextField fx:id="textCommand" focusTraversable="true"/>
+                        <Button mnemonicParsing="false" text="Send" onAction="#onSendAction" />
                      </children>
                   </FlowPane>
                </children>
@@ -35,7 +35,7 @@
                   <Insets top="8.0" />
                </padding>
             </HBox>
-            <TextArea prefHeight="324.0" prefWidth="600.0">
+            <TextArea prefHeight="324.0" prefWidth="600.0" editable="false" fx:id="textShow" focusTraversable="false">
                <VBox.margin>
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                </VBox.margin>
