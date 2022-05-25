@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
+import javafx.scene.control.ScrollPane;
 
 /**
  * TODO commenter la responsabilité de cette classe
@@ -30,11 +30,15 @@ public class EditorController {
     @FXML
     public TextField textCommand;
 
+    public String stockCommand;
     protected Stage popup = new Stage();
 
     @FXML
     protected void onSendAction() {
         quit();
+        stockCommand = textCommand.getText();
+        // System.out.println(stockCommand);
+        textCommand.clear();
     }
 
     @FXML
@@ -53,10 +57,12 @@ public class EditorController {
     }
     private void helpStage() {
         popup.setTitle("Commands");
-        popup.setHeight(620);
-        popup.setWidth(330);
-        popup.setX(150);
+        popup.setHeight(375);
+        popup.setWidth(340);
+        popup.setX(100);
         VBox racine = new VBox(10);
+        ScrollPane slp = new ScrollPane();
+
         Text titre = new Text("WARNING: Arguments séparés par des virgules\n" +
                 "\n" +
                 "> t un_fichier : lit le contenu du fichier.\n" +
@@ -83,7 +89,8 @@ public class EditorController {
                 "> s : substitue une chaine de caractères par une autre qui \nsuit celle-ci en argument dans l’intervalle de lignes entré \nen premier argument. " +
                 "Il est possible de ne pas mettre \nd’intervalles. Alors la substitution s’effectuera \ndans tout le texte.\n" +
                 "\n");
-        racine.getChildren().add(titre);
+        slp.setContent(titre);
+        racine.getChildren().add(slp);
         Scene scene = new Scene(racine);
         popup.setScene(scene);
         popup.show();
