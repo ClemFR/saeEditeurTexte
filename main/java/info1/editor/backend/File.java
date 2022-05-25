@@ -163,20 +163,25 @@ public class File {
      *                                   is at max line size
      */
     public void insert(int line, String text) {
-        if (line < 1 || line > this.currentLine) {
-            throw new NullPointerException("Index out of bounds");
-        }
-        if (this.currentLine == MAX_LINES - 1) {
-            throw new IndexOutOfBoundsException("File at max line size");
-        }
-        if (text.length() > MAX_CHAR) {
-            throw new IndexOutOfBoundsException("75 char max");
+        if (!(line == 1 && this.currentLine == 0)) { // Create the first line if the file is empty
+
+            if (line < 1 || line > this.currentLine) {
+                throw new NullPointerException("Index out of bounds");
+            }
+            if (this.currentLine == MAX_LINES - 1) {
+                throw new IndexOutOfBoundsException("File at max line size");
+            }
+            if (text.length() > MAX_CHAR) {
+                throw new IndexOutOfBoundsException("75 char max");
+            }
+
+            for (int i = this.currentLine; i > line - 2; i--) {
+                this.content[i + 1] = this.content[i];
+            }
         }
 
-        for (int i = this.currentLine; i > line; i--) {
-            this.content[i] = this.content[i - 1];
-        }
-        this.content[line] = text;
+
+        this.content[line - 1] = text;
         this.currentLine++;
     }
 

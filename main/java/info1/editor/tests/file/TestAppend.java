@@ -100,7 +100,7 @@ public class TestAppend {
         } catch (IOException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
-        } catch (IndexOutOfBoundsException erreurAttendue) {
+        } catch (IndexOutOfBoundsException expectedError) {
             testOk &= true;
         }
 

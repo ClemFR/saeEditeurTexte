@@ -37,5 +37,11 @@ public class StartTest {
         } else {
             System.out.println("Test append ECHEC");
         }
+
+        if (TestInsert.launch()) {
+            System.out.println("Test insert OK");
+        } else {
+            System.out.println("Test insert ECHEC");
+        }
     }
 }
