@@ -78,6 +78,33 @@ public class TestAppend {
             testOk &= true;
         }
 
+        try {
+            File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
+            for (int i = 18 ; i < 99 ; i++) {
+                f.append(i, "azerty");
+            }
+            testOk &= true;
+        } catch (IOException e) {
+            System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
+            e.printStackTrace();
+        } catch (IndexOutOfBoundsException e) {
+            testOk &= false;
+        }
+
+        try {
+            File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
+            for (int i = 18 ; i < 100 ; i++) {
+                f.append(i, "azerty");
+            }
+            testOk &= false;
+        } catch (IOException e) {
+            System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
+            e.printStackTrace();
+        } catch (IndexOutOfBoundsException erreurAttendue) {
+            testOk &= true;
+        }
+
+
         return testOk;
     }
 }
