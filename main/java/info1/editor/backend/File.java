@@ -1,6 +1,7 @@
 package info1.editor.backend;
 
 import info1.editor.exception.FileNotFoundException;
+import info1.editor.exception.LineToLongException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -92,11 +93,11 @@ public class File {
     /**
      * Delete the line at specified index and shift the other lines.
      * @param idLine the index of the line to delete
-     * @throws NullPointerException If the specified index is out of bounds
+     * @throws IndexOutOfBoundsException If the specified index is out of bounds
      */
-    public void delete(int idLine) throws NullPointerException {
+    public void delete(int idLine) throws IndexOutOfBoundsException {
         if (idLine < 0 || idLine > this.currentLine) {
-            throw new NullPointerException("Index out of bounds");
+            throw new IndexOutOfBoundsException("Index out of bounds");
         }
 
         int lineIndex;
@@ -118,11 +119,11 @@ public class File {
      * Delete all lines included in the specified range.
      * @param start start of the range
      * @param end end of the range
-     * @throws NullPointerException If the specified range is out of bounds
+     * @throws IndexOutOfBoundsException If the specified range is out of bounds
      */
     public void delete(int start, int end) {
         if (start < 0 || start > this.currentLine || end < 0 || end > this.currentLine || start > end) {
-            throw new NullPointerException("Index out of bounds");
+            throw new IndexOutOfBoundsException("Index out of bounds");
         }
 
         int linesDeleted = end - start + 1;
@@ -142,19 +143,19 @@ public class File {
      * Insert the specified text after the specified line.
      * @param line the line to insert the text after it.
      * @param text the text to insert
-     * @throws NullPointerException If the specified line is out of bounds
-     * @throws IndexOutOfBoundsException If the specified text is too long or if the file
-     *                                   is at max line size
+     * @throws IndexOutOfBoundsException If the specified line is out of bounds or if
+     *      *                            the file is at max line size
+     * @throws LineToLongException If the specified text is too long
      */
     public void append(int line, String text) {
         if (line < 0 || line > this.currentLine) {
-            throw new NullPointerException("Index out of bounds");
+            throw new IndexOutOfBoundsException("Index out of bounds");
         }
         if (this.currentLine == MAX_LINES - 1) {
             throw new IndexOutOfBoundsException("File at max line size");
         }
         if (text.length() > MAX_CHAR) {
-            throw new IndexOutOfBoundsException("75 char max");
+            throw new LineToLongException("75 char max");
         }
 
         for (int i = this.currentLine ; i > line + 1 ; i--) {
@@ -168,21 +169,21 @@ public class File {
      * Insert the specified text before the specified line.
      * @param line the line to insert the text before it.
      * @param text the text to insert
-     * @throws NullPointerException If the specified line is out of bounds
-     * @throws IndexOutOfBoundsException If the specified text is too long or if the file
-     *                                   is at max line size
+     * @throws IndexOutOfBoundsException If the specified line is out of bounds or if the
+     *                                   file is at max line size
+     * @throws LineToLongException If the specified text exceeds the maximum line size
      */
     public void insert(int line, String text) {
         if (!(line == 1 && this.currentLine == 0)) { // Create the first line if the file is empty
 
             if (line < 1 || line > this.currentLine) {
-                throw new NullPointerException("Index out of bounds");
+                throw new IndexOutOfBoundsException("Index out of bounds");
             }
             if (this.currentLine == MAX_LINES - 1) {
                 throw new IndexOutOfBoundsException("File at max line size");
             }
             if (text.length() > MAX_CHAR) {
-                throw new IndexOutOfBoundsException("75 char max");
+                throw new LineToLongException("75 char max");
             }
 
             for (int i = this.currentLine; i > line - 2; i--) {
@@ -199,14 +200,15 @@ public class File {
      * Replace the specified line with the specified text.
      * @param line the line to replace
      * @param text the text to replace with
-     * @throws NullPointerException If the specified line is out of bounds
+     * @throws IndexOutOfBoundsException If the specified line is out of bounds
+     * @throws LineToLongException If the specified text exceeds the maximum line size
      */
     public void edit(int line, String text) {
         if (line < 0 || line > this.currentLine) {
-            throw new NullPointerException("Index out of bounds");
+            throw new IndexOutOfBoundsException("Index out of bounds");
         }
         if (text.length() > MAX_CHAR) {
-            throw new IndexOutOfBoundsException("75 char max");
+            throw new LineToLongException("75 char max");
         }
 
         this.content[line] = text;

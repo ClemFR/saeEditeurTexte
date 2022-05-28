@@ -2,8 +2,7 @@ package info1.editor.tests.file;
 
 import info1.editor.backend.File;
 import info1.editor.exception.FileNotFoundException;
-
-import java.io.IOException;
+import info1.editor.exception.LineToLongException;
 
 public class TestAppend {
 
@@ -75,7 +74,7 @@ public class TestAppend {
         } catch (FileNotFoundException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
-        } catch (IndexOutOfBoundsException expectedError) {
+        } catch (LineToLongException expectedError) {
             testOk &= true;
         }
 

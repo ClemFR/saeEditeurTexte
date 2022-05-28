@@ -1,9 +1,6 @@
 package info1.editor.tests;
 
-import info1.editor.backend.File;
 import info1.editor.tests.file.*;
-
-import java.io.IOException;
 
 public class StartTest {
     /**

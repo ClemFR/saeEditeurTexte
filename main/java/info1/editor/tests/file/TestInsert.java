@@ -19,7 +19,7 @@ public class TestInsert {
         } catch (FileNotFoundException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
-        } catch (NullPointerException expectedError) {
+        } catch (IndexOutOfBoundsException expectedError) {
             testOk &= true;
         }
 
@@ -30,7 +30,7 @@ public class TestInsert {
         } catch (FileNotFoundException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
-        } catch (NullPointerException expectedError) {
+        } catch (IndexOutOfBoundsException expectedError) {
             testOk &= false;
         }
 
@@ -41,7 +41,7 @@ public class TestInsert {
         } catch (FileNotFoundException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
-        } catch (NullPointerException expectedError) {
+        } catch (IndexOutOfBoundsException expectedError) {
             testOk &= false;
         }
 
