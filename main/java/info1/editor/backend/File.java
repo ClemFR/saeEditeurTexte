@@ -1,6 +1,11 @@
 package info1.editor.backend;
 
-import java.io.*;
+import info1.editor.exception.FileNotFoundException;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -17,17 +22,22 @@ public class File {
     /**
      * Creates a new file with the given path.
      * @param path the path of the file to create
-     * @throws IOException if the file cannot be loaded
+     * @throws FileNotFoundException if the file cannot be loaded
      */
-    public File(String path) throws IOException {
+    public File(String path) {
 
         java.io.File file = new java.io.File(path);
         this.path = Path.of(path);
 
         if (!file.exists()) {
-            throw new IOException("File not found");
+            throw new FileNotFoundException("File not found");
         }
-        this.content = loadFile(this.path);
+        try {
+            this.content = loadFile(this.path);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FileNotFoundException("File not found");
+        }
     }
 
     /**
@@ -183,6 +193,23 @@ public class File {
 
         this.content[line - 1] = text;
         this.currentLine++;
+    }
+
+    /**
+     * Replace the specified line with the specified text.
+     * @param line the line to replace
+     * @param text the text to replace with
+     * @throws NullPointerException If the specified line is out of bounds
+     */
+    public void edit(int line, String text) {
+        if (line < 0 || line > this.currentLine) {
+            throw new NullPointerException("Index out of bounds");
+        }
+        if (text.length() > MAX_CHAR) {
+            throw new IndexOutOfBoundsException("75 char max");
+        }
+
+        this.content[line] = text;
     }
 
     /**

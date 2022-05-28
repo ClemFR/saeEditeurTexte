@@ -1,6 +1,7 @@
 package info1.editor.tests.file;
 
 import info1.editor.backend.File;
+import info1.editor.exception.FileNotFoundException;
 
 import java.io.IOException;
 
@@ -50,7 +51,7 @@ public class TestAppend {
             for (int i = expectedResults[0].length ; i < result.length ; i++) {
                 testOk &= result[i] == null;
             }
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
         }
@@ -59,7 +60,7 @@ public class TestAppend {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierDernieresLignes.txt");
             f.append(0, "uaseco");
             testOk &= false;
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
         } catch (IndexOutOfBoundsException expectedError) {
@@ -71,7 +72,7 @@ public class TestAppend {
             f.append(0, "text over 75 characters long aaaaaaaaaaaaaaaaaaaaaaaa" +
                                  "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
             testOk &= false;
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
         } catch (IndexOutOfBoundsException expectedError) {
@@ -84,7 +85,7 @@ public class TestAppend {
                 f.append(i, "azerty");
             }
             testOk &= true;
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
         } catch (IndexOutOfBoundsException e) {
@@ -97,7 +98,7 @@ public class TestAppend {
                 f.append(i, "azerty");
             }
             testOk &= false;
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
         } catch (IndexOutOfBoundsException expectedError) {

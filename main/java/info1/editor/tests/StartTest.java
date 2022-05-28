@@ -10,14 +10,12 @@ public class StartTest {
      * Debut du chemin menant au projet, utilisé pour construire le chemin de chaque fichier.
      * Il faut spécifier le dossier contanant le dossier "src"
      */
-    private static final String PATH_BASE = "" ; //""C:/Users/Clement_L/Documents/IUT/S2/programmation/eclipseWorkspace/";
-
     public static void main(String[] args) {
 
         if (TestFile.launch()) {
-            System.out.println("Test file OK");
+            System.out.println("Test file (constructeur) OK");
         } else {
-            System.out.println("Test file ECHEC");
+            System.out.println("Test file (constructeur) ECHEC");
         }
 
         if (TestDeleteInt.launch()) {

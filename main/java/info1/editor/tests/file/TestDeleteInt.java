@@ -1,6 +1,7 @@
 package info1.editor.tests.file;
 
 import info1.editor.backend.File;
+import info1.editor.exception.FileNotFoundException;
 
 import java.io.IOException;
 
@@ -71,7 +72,7 @@ public class TestDeleteInt {
             for (int i = expectedResults[0].length - 1; i < result.length ; i++) {
                 testOk &= result[i] == null;
             }
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
         }
@@ -87,7 +88,7 @@ public class TestDeleteInt {
             }
             testOk &= f.getContent()[99] == null;
 
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
         }
@@ -96,7 +97,7 @@ public class TestDeleteInt {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             f.delete(-1);
             testOk &= false;
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
         } catch (NullPointerException expectedError) {
@@ -107,7 +108,7 @@ public class TestDeleteInt {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             f.delete(100);
             testOk &= false;
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
             e.printStackTrace();
         } catch (NullPointerException expectedError) {

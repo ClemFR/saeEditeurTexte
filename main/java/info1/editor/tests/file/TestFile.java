@@ -1,6 +1,7 @@
 package info1.editor.tests.file;
 
 import info1.editor.backend.File;
+import info1.editor.exception.FileNotFoundException;
 
 import java.io.IOException;
 
@@ -12,14 +13,14 @@ public class TestFile {
         try {
             new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             testOk = true;
-        } catch (IOException | IndexOutOfBoundsException e) {
+        } catch (FileNotFoundException | IndexOutOfBoundsException e) {
             testOk = false;
         }
 
         try {
             new File("ceci est un chemin invalide");
             testOk = false;
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             testOk = true;
         }
 
@@ -28,7 +29,7 @@ public class TestFile {
             testOk &= false;
         } catch (IndexOutOfBoundsException e) {
             testOk &= true;
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             testOk &= false;
         }
 
@@ -37,7 +38,7 @@ public class TestFile {
             testOk &= false;
         } catch (IndexOutOfBoundsException e) {
             testOk &= true;
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             testOk &= false;
         }
 
