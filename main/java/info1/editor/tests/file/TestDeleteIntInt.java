@@ -3,8 +3,6 @@ package info1.editor.tests.file;
 import info1.editor.backend.File;
 import info1.editor.exception.FileNotFoundException;
 
-import java.io.IOException;
-
 public class TestDeleteIntInt {
 
     public static boolean launch() {
@@ -63,6 +61,8 @@ public class TestDeleteIntInt {
 
         };
 
+        /* Suppression de lignes en debut de fichier pour voir si le décalage s'effectue
+         * bien */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             f.delete(0, 4);
@@ -84,7 +84,8 @@ public class TestDeleteIntInt {
             e.printStackTrace();
         }
 
-
+        /* Suppression de lignes en fin de fichier pour voir si le décalage d'une ligne et
+         * la transformation en null s'effectue bien */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierDernieresLignes.txt");
             f.delete(94, 98);
@@ -105,7 +106,8 @@ public class TestDeleteIntInt {
             e.printStackTrace();
         }
 
-
+        /* Suppression de lignes en fin de fichier pour voir si la transformation en null
+         * s'effectue bien */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierDernieresLignes.txt");
             f.delete(94, 99);
@@ -126,6 +128,7 @@ public class TestDeleteIntInt {
             e.printStackTrace();
         }
 
+        /* Suppression à un index illégal (interdit - valide) */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             f.delete(-1, 4);
@@ -137,6 +140,7 @@ public class TestDeleteIntInt {
             testOk &= true;
         }
 
+        /* Suppression à un index illégal (valide - interdit) */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             f.delete(0, 100);
@@ -148,6 +152,7 @@ public class TestDeleteIntInt {
             testOk &= true;
         }
 
+        /* Suppression à un index illégal (interdit - interdit) */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             f.delete(-1, 100);

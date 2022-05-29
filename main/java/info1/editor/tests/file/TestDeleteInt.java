@@ -3,8 +3,6 @@ package info1.editor.tests.file;
 import info1.editor.backend.File;
 import info1.editor.exception.FileNotFoundException;
 
-import java.io.IOException;
-
 public class TestDeleteInt {
 
     /**
@@ -61,6 +59,8 @@ public class TestDeleteInt {
         };
 
 
+        /* Suppression d'une ligne en debut de fichier pour voir si toutes les lignes sont
+         * bien décalés */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             f.delete(0);
@@ -77,6 +77,8 @@ public class TestDeleteInt {
             e.printStackTrace();
         }
 
+        /* Suppression d'une ligne en fin de fichier pour voir si elle se transforme bien
+         * en null */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierDernieresLignes.txt");
             f.delete(99);
@@ -93,6 +95,7 @@ public class TestDeleteInt {
             e.printStackTrace();
         }
 
+        /* Tentative de suppression d'une ligne à un indice qui n'existe pas (negatif) */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             f.delete(-1);
@@ -104,6 +107,7 @@ public class TestDeleteInt {
             testOk &= true;
         }
 
+        /* Tentative de suppression d'une ligne à un indice qui n'existe pas (positif) */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             f.delete(100);

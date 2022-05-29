@@ -38,6 +38,7 @@ public class TestAppend {
                 }
         };
 
+        /* Ajout classique de lignes */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             f.append(0, "uaseco");
@@ -55,6 +56,7 @@ public class TestAppend {
             e.printStackTrace();
         }
 
+        /* Ajout d'une ligne alors que le fichier est plein  */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierDernieresLignes.txt");
             f.append(0, "uaseco");
@@ -66,6 +68,7 @@ public class TestAppend {
             testOk &= true;
         }
 
+        /* Ajout d'une ligne trop longue  */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             f.append(0, "text over 75 characters long aaaaaaaaaaaaaaaaaaaaaaaa" +
@@ -78,6 +81,8 @@ public class TestAppend {
             testOk &= true;
         }
 
+        /* Ajout de plusieurs lignes jusqu'à remplir le fichier sans dépasser
+         * la limite de lignes */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             for (int i = 18 ; i < 99 ; i++) {
@@ -91,6 +96,8 @@ public class TestAppend {
             testOk &= false;
         }
 
+        /* Ajout de plusieurs lignes jusqu'à remplir le fichier en dépassant
+         * la limite de lignes */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             for (int i = 18 ; i < 100 ; i++) {

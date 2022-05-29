@@ -3,8 +3,6 @@ package info1.editor.tests.file;
 import info1.editor.backend.File;
 import info1.editor.exception.FileNotFoundException;
 
-import java.io.IOException;
-
 public class TestSave {
 
     //TODO: finir ce test
