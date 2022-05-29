@@ -215,6 +215,63 @@ public class File {
     }
 
     /**
+     * @param lineToCopy Index of the line to copy
+     * @param locationToPaste Index of the location to paste the line just after it.
+     *                        Use '-1' to paste at the start of the file.
+     * @throws IndexOutOfBoundsException If the specified line is out of bounds
+     */
+    public void copy(int lineToCopy, int locationToPaste) {
+        if (lineToCopy < 0 || lineToCopy > this.currentLine) {
+            throw new IndexOutOfBoundsException("Index of 'lineToCopy' out of bounds");
+        }
+        if (locationToPaste < -1 || locationToPaste > this.currentLine) {
+            throw new IndexOutOfBoundsException("Index of 'locationToPaste' out of bounds");
+        }
+
+        if (locationToPaste == -1) {
+            this.insert(0, this.content[lineToCopy]);
+        } else {
+            this.append(locationToPaste, this.content[lineToCopy]);
+        }
+    }
+
+    /**
+     * @param start Starting index of the range to copy
+     * @param end Last index of the range to copy
+     * @param locationToPaste Index of the location to paste selected lines just after it.
+     *                        Use '-1' to paste at the start of the file.
+     * @throws IndexOutOfBoundsException If the specified line is out of bounds
+     */
+    public void copy(int start, int end, int locationToPaste) {
+        if (start < 0 || start > this.currentLine) {
+            throw new IndexOutOfBoundsException("Index of 'start' out of bounds");
+        }
+        if (end < 0 || end > this.currentLine || start >= end) {
+            throw new IndexOutOfBoundsException("Index of 'end' out of bounds");
+        }
+        if (locationToPaste < -1 || locationToPaste > this.currentLine) {
+            throw new IndexOutOfBoundsException("Index of 'locationToPaste' out of bounds");
+        }
+
+        String[] linesToCopy = new String[end - start + 1];
+        for (int i = start ; i <= end ; i++) {
+            linesToCopy[i - start] = this.content[i];
+        }
+
+        if (locationToPaste == -1) {
+            // Revert paste to rectify the order of the lines
+            for (int i = linesToCopy.length-1 ; i >= 0 ; i--) {
+                this.insert(1, linesToCopy[i]);
+            }
+        } else {
+            // Revert paste to rectify the order of the lines
+            for (int i = linesToCopy.length-1 ; i >= 0 ; i--) {
+                this.append(locationToPaste, linesToCopy[i]);
+            }
+        }
+    }
+
+    /**
      * Get the file in an array list
      * @return the file in an array list
      */
