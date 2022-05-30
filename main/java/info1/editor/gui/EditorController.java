@@ -48,6 +48,7 @@ public class EditorController {
 
     @FXML
     protected void onSendAction() throws IOException {
+        // TODO Gérer si textCommand is empty (au lieu de balancer une erreur)
         int valeur = -1;
         boolean commandeOk;
         String[] commandesEnregistres = {"t", "f", "q", "?", "e", "a", "i", "m", "c", "d"};
