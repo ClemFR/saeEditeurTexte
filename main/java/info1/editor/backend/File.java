@@ -58,7 +58,7 @@ public class File {
         }
 
         String[] lines = new String[MAX_LINES];
-        Arrays.fill(lines, "");
+        Arrays.fill(lines, null);
 
         int lineIndex = 0;
 

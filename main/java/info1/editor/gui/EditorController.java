@@ -42,6 +42,12 @@ public class EditorController {
 
     public String stockCommand;
 
+    public String[] text;
+
+    public String[] splitCommande;
+    public String memoryPath;
+
+    public File f;
     protected Stage popup = new Stage();
 
     public Alert a = new Alert(Alert.AlertType.ERROR);
@@ -52,7 +58,7 @@ public class EditorController {
         int valeur = -1;
         boolean commandeOk;
         String[] commandesEnregistres = {"t", "f", "q", "?", "e", "a", "i", "m", "c", "d"};
-        String[] splitCommande;
+
         try {
             splitCommande = new String[]{textCommand.getText().substring(0, textCommand.getText().indexOf(" ")), textCommand.getText().substring(textCommand.getText().indexOf(" ") + 1)};
         } catch (Exception e) {
@@ -65,10 +71,12 @@ public class EditorController {
                 commandeOk = splitCommande[0].equals(commandesEnregistres[i]);
                 if (commandeOk) { valeur = i; }
             }
+
         } catch (Exception e) {
-            a.setHeaderText("Erreur, commande inconnue");
-            a.show();
+
+            errorCommandBox();
         }
+
         switch(valeur) {
             case -1:
                 a.setHeaderText("Erreur, commande inconnue");
@@ -78,17 +86,12 @@ public class EditorController {
             case 0: //commande t -> ouvrir un fichier & lire contenu
                 // TODO Gérer le crash niveau interface, crash s'affiche seulement dans console
                 try {
-                    System.out.println("Ouverture du fichier : " + splitCommande[1]);
-                    File f = new File(splitCommande[1]);
-                    String[] macouille = f.loadFile(Paths.get(splitCommande[1]));
-                    String delimeter = "\r\n";
-                    String rsl = String.join( delimeter,  macouille);
-                    textShow.setText(rsl);
-                } catch (Exception e) {
-                    a.setHeaderText("Erreur lors de l'ouverture du fichier");
-                    a.show();
-                    System.out.println("Erreur lors de l'ouverture du fichier.");
+                    memoryPath = splitCommande[1];
+                    writeRead();
+                } catch (Exception err) {
+                    errorCommandBox();
                 }
+
                 break;
 
             case 1: //commande f -> sauver le fichier
@@ -110,8 +113,18 @@ public class EditorController {
                 //                               e 1 -> effacer ligne 1
                 //                               e 1, 7 -> effacer ligne 1 à 7)
                 System.out.println("WIP !!! Destruction des lignes : " + splitCommande[1]);
-                //TODO : détruire les lignes
                 //TODO : mechanisme de détection du type de commande
+
+                try {
+                    int number = Integer.valueOf(splitCommande[1]);
+                    f.delete(number);
+                    // System.out.println(Arrays.toString(f.getContent()));
+                    String delimeter = "\r\n";
+                    String rsl = String.join( delimeter,  f.getContent());
+                    textShow.setText(rsl);
+                } catch (Exception err) {
+                    errorCommandBox();
+                }
                 break;
 
             case 5: // commande a -> ajouter texte a ligne (a 1 bla bla bla ->
@@ -157,6 +170,20 @@ public class EditorController {
             Platform.exit();
         }
     }
+
+    private void writeRead() {
+        try {
+            System.out.println("Ouverture du fichier : " + splitCommande[1]);
+            f = new File(memoryPath);
+            text = f.loadFile(Paths.get(memoryPath));
+            String delimeter = "\r\n";
+            String rsl = String.join( delimeter,  text);
+            textShow.setText(rsl);
+        } catch (Exception e) {
+            errorCommandBox();
+            // System.out.println("Erreur lors de l'ouverture du fichier.");
+        }
+    }
     private void helpStage() {
         popup.setTitle("Commands");
         popup.setHeight(375);
@@ -197,5 +224,10 @@ public class EditorController {
         popup.setScene(scene);
         popup.show();
 
+    }
+
+    private void errorCommandBox() {
+        a.setHeaderText("Erreur, commande inconnue ou invalide");
+        a.show();
     }
 }
