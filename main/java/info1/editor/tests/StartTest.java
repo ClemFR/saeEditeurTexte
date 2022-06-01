@@ -44,5 +44,17 @@ public class StartTest {
         } else {
             System.out.println("Test edit ECHEC");
         }
+
+        if (TestCopyInt.launch()) {
+            System.out.println("Test CopyInt OK");
+        } else {
+            System.out.println("Test CopyInt ECHEC");
+        }
+
+        if (TestCopyIntInt.launch()) {
+            System.out.println("Test CopyIntInt OK");
+        } else {
+            System.out.println("Test CopyIntInt ECHEC");
+        }
     }
 }
