@@ -56,5 +56,17 @@ public class StartTest {
         } else {
             System.out.println("Test CopyIntInt ECHEC");
         }
+
+        if (TestMoveInt.launch()) {
+            System.out.println("Test MovetInt OK");
+        } else {
+            System.out.println("Test MoveInt ECHEC");
+        }
+
+        if (TestMoveIntInt.launch()) {
+            System.out.println("Test MovetIntInt OK");
+        } else {
+            System.out.println("Test MoveIntInt ECHEC");
+        }
     }
 }
