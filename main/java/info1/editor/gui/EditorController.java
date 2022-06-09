@@ -96,7 +96,7 @@ public class EditorController {
 
             case 1: //commande f -> sauver le fichier
                 System.out.println("WIP !!! Sauvegarde du fichier : " + splitCommande[1]);
-                // File.save()
+
                 break;
 
             case 2: //commande q -> quitter
@@ -116,8 +116,17 @@ public class EditorController {
                 //TODO : mechanisme de détection du type de commande
 
                 try {
-                    int number = Integer.valueOf(splitCommande[1]);
-                    f.delete(number);
+
+                    String[] parts = splitCommande[1].split(",");
+                    System.out.println(parts.length);
+                    if (parts.length > 1) {
+                        System.out.println(Integer.valueOf(parts[1].trim()));
+                        f.delete(Integer.parseInt(parts[0].trim()),Integer.parseInt(parts[1].trim()) );
+                    } else {
+                        int number = Integer.parseInt(splitCommande[1]);
+                        f.delete(number);
+                    }
+
                     // System.out.println(Arrays.toString(f.getContent()));
                     showText();
                 } catch (Exception err) {
@@ -158,12 +167,37 @@ public class EditorController {
 
             case 7: // commande m -> modifier texte ligne (m 2 -> voir pdf)
                 System.out.println("WIP !!! Modification de ligne : " + splitCommande[1]);
-                //TODO : modifier texte de ligne
+                try {
+                    String[] parts = splitCommande[1].split(",");
+                    String texteToAdd = parts[1].trim();
+                    int line = Integer.parseInt(parts[0].trim());
+                    f.edit(line, texteToAdd);
+                    showText();
+                } catch (Exception err) {
+                    errorCommandBox();
+                }
                 break;
 
             case 8: // commande c -> copier ligne (c 1, 3, 4 | c 1, 6)
-                System.out.println("WIP !!! Copie de ligne : " + splitCommande[1]);
+                System.out.println("Copie de ligne : " + splitCommande[1]);
                 //TODO : copier ligne + détection du type de commande
+                int lineFrom;
+                int lineTo;
+                int lineWhere;
+                try {
+                    String[] parts = splitCommande[1].split(",");
+                    lineFrom = Integer.parseInt(parts[0].trim());
+                    lineTo = Integer.parseInt(parts[1].trim());
+                    if (parts.length > 2) {
+                        lineWhere = Integer.parseInt(parts[2].trim());
+                        f.copy(lineFrom, lineTo, lineWhere);
+                    } else {
+                        f.copy(lineFrom, lineTo);
+                    }
+                    showText();
+                } catch (Exception e) {
+                    errorCommandBox();
+                }
                 break;
         }
         stockCommand = textCommand.getText();
