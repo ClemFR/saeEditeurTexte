@@ -272,6 +272,78 @@ public class File {
     }
 
     /**
+     * @param lineToCopy Index of the line to move
+     * @param locationToPaste Index of the location to paste the line just after it.
+     *                        Use '-1' to paste at the start of the file.
+     * @throws IndexOutOfBoundsException If the specified line is out of bounds
+     */
+    public void move(int lineToCopy, int locationToPaste) {
+        if (lineToCopy < 0 || lineToCopy > this.currentLine - 1) {
+            throw new IndexOutOfBoundsException("Index of 'lineToCopy' out of bounds");
+        }
+        if (locationToPaste < -1 || locationToPaste > this.currentLine - 1) {
+            throw new IndexOutOfBoundsException("Index of 'locationToPaste' out of bounds");
+        }
+
+        String lineToMove = this.content[lineToCopy];
+
+        if (locationToPaste >= lineToCopy) {
+            locationToPaste--;
+        }
+
+        if (locationToPaste == -1) {
+            delete(lineToCopy);
+            insert(1, lineToMove);
+        } else {
+            delete(lineToCopy);
+            append(locationToPaste, lineToMove);
+        }
+    }
+
+    /**
+     * @param start Starting index of the range to move
+     * @param end Last index of the range to move
+     * @param locationToPaste Index of the location to paste selected lines just after it.
+     *                        Use '-1' to paste at the start of the file.
+     * @throws IndexOutOfBoundsException If the specified line is out of bounds
+     */
+    public void move(int start, int end, int locationToPaste) {
+        if (start < 0 || start > this.currentLine - 1) {
+            throw new IndexOutOfBoundsException("Index of 'start' out of bounds");
+        }
+        if (end < 0 || end > this.currentLine - 1 || start > end) {
+            throw new IndexOutOfBoundsException("Index of 'end' out of bounds");
+        }
+        if (locationToPaste < -1 || locationToPaste > this.currentLine - 1) {
+            throw new IndexOutOfBoundsException("Index of 'locationToPaste' out of bounds");
+        }
+        if (locationToPaste > start && locationToPaste <= end) {
+            throw new IndexOutOfBoundsException("Index of in 'locationToPaste' in between 'start' and 'end'");
+        }
+
+        String[] linesToCopy = new String[end - start + 1];
+        for (int i = start ; i <= end ; i++) {
+            linesToCopy[i - start] = this.content[i];
+        }
+
+        delete(start, end);
+        if (locationToPaste >= start) {
+            locationToPaste -= linesToCopy.length;
+        }
+        if (locationToPaste <= -1) {
+            // Revert paste to rectify the order of the lines
+            for (int i = linesToCopy.length-1 ; i >= 0 ; i--) {
+                this.insert(1, linesToCopy[i]);
+            }
+        } else {
+            // Revert paste to rectify the order of the lines
+            for (int i = linesToCopy.length-1 ; i >= 0 ; i--) {
+                this.append(locationToPaste, linesToCopy[i]);
+            }
+        }
+    }
+
+    /**
      * Get the file in an array list
      * @return the file in an array list
      */

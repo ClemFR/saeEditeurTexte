@@ -63,19 +63,20 @@ public class EditorController {
             splitCommande = new String[]{textCommand.getText().substring(0, textCommand.getText().indexOf(" ")), textCommand.getText().substring(textCommand.getText().indexOf(" ") + 1)};
         } catch (Exception e) {
             splitCommande = new String[]{textCommand.getText()};
+            System.out.println("Erreur splitcommande gettext");
         }
 
         commandeOk = false;
-        try {
-            for (int i = 0; i < commandesEnregistres.length || commandeOk; i++) {
+         try {
+            for (int i = 0; i < commandesEnregistres.length && !commandeOk; i++) {
                 commandeOk = splitCommande[0].equals(commandesEnregistres[i]);
                 if (commandeOk) { valeur = i; }
             }
 
-        } catch (Exception e) {
-
-            errorCommandBox();
-        }
+         } catch (Exception e) {
+             errorCommandBox();
+             System.out.println("Erreur splitcommande");
+         }
 
         switch(valeur) {
             case -1:
@@ -84,12 +85,13 @@ public class EditorController {
                 break;
 
             case 0: //commande t -> ouvrir un fichier & lire contenu
-                // TODO Gérer le crash niveau interface, crash s'affiche seulement dans console
+
                 try {
                     memoryPath = splitCommande[1];
                     writeRead();
                 } catch (Exception err) {
                     errorCommandBox();
+                    System.out.println("Erreur ouverture/lecture");
                 }
 
                 break;
@@ -113,7 +115,7 @@ public class EditorController {
                 //                               e 1 -> effacer ligne 1
                 //                               e 1, 7 -> effacer ligne 1 à 7)
                 System.out.println("Destruction des lignes : " + splitCommande[1]);
-                //TODO : mechanisme de détection du type de commande
+
 
                 try {
 
@@ -131,23 +133,25 @@ public class EditorController {
                     showText();
                 } catch (Exception err) {
                     errorCommandBox();
+                    System.out.println("Erreur delete");
                 }
                 break;
 
             case 5: // commande a -> ajouter texte a ligne (a 1 bla bla bla ->
                 //                                  ajouter à ligne 1 bla bla bla)
                 System.out.println("WIP !!! Ajout de ligne : " + splitCommande[1]);
-                //TODO : ajouter texte a ligne
+
 
                 try {
-                    String[] parts = splitCommande[1].split(" ", 2);
+                    String[] parts = splitCommande[1].split(",", 2);
                     System.out.println(parts[0] + parts[1]);
                     String texteToAdd = parts[1];
-                    int line = Integer.valueOf(parts[0]);
+                    int line = Integer.parseInt(parts[0]);
                     f.append(line, texteToAdd);
                     showText();
                 } catch (Exception err) {
                     errorCommandBox();
+                    System.out.println("Erreur Append");
                 }
                 break;
 
@@ -155,13 +159,14 @@ public class EditorController {
                 //                                  insérer à ligne 2 bla bla bla)
                 System.out.println("WIP !!! Insertion de ligne : " + splitCommande[1]);
                 try {
-                    String[] parts = splitCommande[1].split(" ", 2);
+                    String[] parts = splitCommande[1].split(",", 2);
                     String texteToAdd = parts[1];
-                    int line = Integer.valueOf(parts[0]);
+                    int line = Integer.parseInt(parts[0]);
                     f.insert(line, texteToAdd);
                     showText();
                 } catch (Exception err) {
                     errorCommandBox();
+                    System.out.println("Erreur Insert");
                 }
                 break;
 
@@ -169,18 +174,18 @@ public class EditorController {
                 System.out.println("WIP !!! Modification de ligne : " + splitCommande[1]);
                 try {
                     String[] parts = splitCommande[1].split(",");
-                    String texteToAdd = parts[1].trim();
+                    String texteToAdd = parts[1];
                     int line = Integer.parseInt(parts[0].trim());
                     f.edit(line, texteToAdd);
                     showText();
                 } catch (Exception err) {
                     errorCommandBox();
+                    System.out.println("Erreur Modify");
                 }
                 break;
 
             case 8: // commande c -> copier ligne (c 1, 3, 4 | c 1, 6)
                 System.out.println("Copie de ligne : " + splitCommande[1]);
-                //TODO : copier ligne + détection du type de commande
                 int lineFrom;
                 int lineTo;
                 int lineWhere;
@@ -197,6 +202,27 @@ public class EditorController {
                     showText();
                 } catch (Exception e) {
                     errorCommandBox();
+                    System.out.println("Erreur Copy");
+                }
+                break;
+
+            case 9: // commande d -> déplacer la ligne*
+                System.out.print("Déplacement de la ligne : " + splitCommande[1]);
+                int lineFromMove, lineToMove, lineWhereMove;
+                try {
+                    String[] parts = splitCommande[1].split(",");
+                    lineFromMove = Integer.parseInt(parts[0].trim());
+                    lineToMove = Integer.parseInt(parts[1].trim());
+                    if (parts.length > 2) {
+                        lineWhereMove = Integer.parseInt(parts[2].trim());
+                        f.move(lineFromMove, lineToMove, lineWhereMove);
+                    } else {
+                        f.move(lineFromMove, lineToMove);
+                    }
+                    showText();
+                } catch (Exception e) {
+                   errorCommandBox();
+                   System.out.println("Erreur Move");
                 }
                 break;
         }
@@ -230,6 +256,7 @@ public class EditorController {
             showText();
         } catch (Exception e) {
             errorCommandBox();
+            System.out.println("Erreur WriteRead()");
             // System.out.println("Erreur lors de l'ouverture du fichier.");
         }
     }
@@ -281,8 +308,15 @@ public class EditorController {
     }
 
     private void showText() {
-        String delimeter = "\r\n";
-        String rsl = String.join(delimeter, f.getContent());
-        textShow.setText(rsl);
+        String toPrint = "";
+        for (int i = 0; i < f.getContent().length && f.getContent()[i] != null; i++ ) {
+            toPrint += i + ". ";
+            if (i < 10) {
+                toPrint += "  ";
+            }
+            toPrint += f.getContent()[i] + "\n";
+        }
+        toPrint = toPrint.substring(0, toPrint.length()-1);
+        textShow.setText(toPrint);
     }
 }
