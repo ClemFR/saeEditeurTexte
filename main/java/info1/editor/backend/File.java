@@ -213,7 +213,7 @@ public class File {
     public void insert(int line, String text) {
         if (!(line == 1 && this.currentLine == 0)) { // Create the first line if the file is empty
 
-            if (line < 1 || line > this.currentLine) {
+            if (line < 0 || line > this.currentLine) {
                 throw new IndexOutOfBoundsException("Index out of bounds");
             }
 
@@ -233,7 +233,7 @@ public class File {
         }
 
 
-        this.content[line - 1] = text;
+        this.content[line] = text;
         this.currentLine++;
     }
 

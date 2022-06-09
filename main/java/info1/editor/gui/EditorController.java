@@ -93,12 +93,16 @@ public class EditorController {
                     errorCommandBox();
                     System.out.println("Erreur ouverture/lecture");
                 }
-
                 break;
 
             case 1: //commande f -> sauver le fichier
                 System.out.println("WIP !!! Sauvegarde du fichier : " + splitCommande[1]);
-
+                try {
+                    f.save(Path.of(splitCommande[1]));
+                } catch (Exception e) {
+                    errorCommandBox();
+                    System.out.println("Erreur save");
+                }
                 break;
 
             case 2: //commande q -> quitter
@@ -120,9 +124,9 @@ public class EditorController {
                 try {
 
                     String[] parts = splitCommande[1].split(",");
-                    System.out.println(parts.length);
+
                     if (parts.length > 1) {
-                        System.out.println(Integer.valueOf(parts[1].trim()));
+
                         f.delete(Integer.parseInt(parts[0].trim()),Integer.parseInt(parts[1].trim()) );
                     } else {
                         int number = Integer.parseInt(splitCommande[1]);
@@ -242,6 +246,15 @@ public class EditorController {
         textCommand.requestFocus();
     }
 
+    @FXML
+    protected void onSaveAction() throws IOException {
+        try {
+            f.save();
+        } catch (Exception err) {
+            a.setHeaderText("Erreur, aucun fichier d'ouvert");
+            a.show();
+        }
+    }
     private void quit() {
         if (textCommand.getText().trim().equals("q")) {
             Platform.exit();
