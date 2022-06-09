@@ -221,15 +221,15 @@ public class File {
      * @throws IndexOutOfBoundsException If the specified line is out of bounds
      */
     public void copy(int lineToCopy, int locationToPaste) {
-        if (lineToCopy < 0 || lineToCopy > this.currentLine) {
+        if (lineToCopy < 0 || lineToCopy > this.currentLine - 1) {
             throw new IndexOutOfBoundsException("Index of 'lineToCopy' out of bounds");
         }
-        if (locationToPaste < -1 || locationToPaste > this.currentLine) {
+        if (locationToPaste < -1 || locationToPaste > this.currentLine - 1) {
             throw new IndexOutOfBoundsException("Index of 'locationToPaste' out of bounds");
         }
 
         if (locationToPaste == -1) {
-            this.insert(0, this.content[lineToCopy]);
+            this.insert(1, this.content[lineToCopy]);
         } else {
             this.append(locationToPaste, this.content[lineToCopy]);
         }
@@ -243,13 +243,13 @@ public class File {
      * @throws IndexOutOfBoundsException If the specified line is out of bounds
      */
     public void copy(int start, int end, int locationToPaste) {
-        if (start < 0 || start > this.currentLine) {
+        if (start < 0 || start > this.currentLine - 1) {
             throw new IndexOutOfBoundsException("Index of 'start' out of bounds");
         }
-        if (end < 0 || end > this.currentLine || start >= end) {
+        if (end < 0 || end > this.currentLine - 1 || start >= end) {
             throw new IndexOutOfBoundsException("Index of 'end' out of bounds");
         }
-        if (locationToPaste < -1 || locationToPaste > this.currentLine) {
+        if (locationToPaste < -1 || locationToPaste > this.currentLine - 1) {
             throw new IndexOutOfBoundsException("Index of 'locationToPaste' out of bounds");
         }
 
