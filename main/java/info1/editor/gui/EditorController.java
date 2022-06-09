@@ -5,44 +5,29 @@
 package info1.editor.gui;
 
 
-import info1.editor.exception.FileNotFoundException;
-import info1.editor.exception.LineToLongException;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import info1.editor.gui.Editor;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import info1.editor.backend.File;
 import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.PrintWriter;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
 
 
 /**
- * TODO commenter la responsabilité de cette classe
- *  *
+ * Manage all the commands and their actions
  */
 public class EditorController {
 
     @FXML
     private TextArea textShow;
     @FXML
-    public TextField textCommand;
+    public static TextField textCommand;
 
     public String stockCommand;
-
-    public String[] text;
 
     public String[] splitCommande;
     public String memoryPath;
@@ -53,8 +38,8 @@ public class EditorController {
     public Alert a = new Alert(Alert.AlertType.ERROR);
 
     @FXML
-    protected void onSendAction() throws IOException {
-        // TODO Gérer si textCommand is empty (au lieu de balancer une erreur)
+    public void onSendAction() throws IOException {
+
         int valeur = -1;
         boolean commandeOk;
         String[] commandesEnregistres = {"t", "f", "q", "?", "e", "a", "i", "m", "c", "d"};
@@ -96,7 +81,7 @@ public class EditorController {
                 break;
 
             case 1: //commande f -> sauver le fichier
-                System.out.println("WIP !!! Sauvegarde du fichier : " + splitCommande[1]);
+                System.out.println("Sauvegarde du fichier : " + splitCommande[1]);
                 try {
                     f.save(Path.of(splitCommande[1]));
                 } catch (Exception e) {
@@ -107,7 +92,7 @@ public class EditorController {
 
             case 2: //commande q -> quitter
                 System.out.println("Au revoir !");
-                Platform.exit();
+                quit();
                 break;
 
             case 3: //commande ? -> afficher les commandes
@@ -143,7 +128,7 @@ public class EditorController {
 
             case 5: // commande a -> ajouter texte a ligne (a 1 bla bla bla ->
                 //                                  ajouter à ligne 1 bla bla bla)
-                System.out.println("WIP !!! Ajout de ligne : " + splitCommande[1]);
+                System.out.println("Ajout de ligne : " + splitCommande[1]);
 
 
                 try {
@@ -161,7 +146,7 @@ public class EditorController {
 
             case 6: // commande i -> inserer texte debut ligne (i 2 bla bla bla ->
                 //                                  insérer à ligne 2 bla bla bla)
-                System.out.println("WIP !!! Insertion de ligne : " + splitCommande[1]);
+                System.out.println("Insertion de ligne : " + splitCommande[1]);
                 try {
                     String[] parts = splitCommande[1].split(",", 2);
                     String texteToAdd = parts[1];
@@ -175,7 +160,7 @@ public class EditorController {
                 break;
 
             case 7: // commande m -> modifier texte ligne (m 2 -> voir pdf)
-                System.out.println("WIP !!! Modification de ligne : " + splitCommande[1]);
+                System.out.println("Modification de ligne : " + splitCommande[1]);
                 try {
                     String[] parts = splitCommande[1].split(",");
                     String texteToAdd = parts[1];
@@ -255,6 +240,8 @@ public class EditorController {
             a.show();
         }
     }
+
+
     private void quit() {
         if (textCommand.getText().trim().equals("q")) {
             Platform.exit();
