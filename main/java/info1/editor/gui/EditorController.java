@@ -112,16 +112,14 @@ public class EditorController {
             case 4: //commande e -> détruire lignes (e -> tout effacer
                 //                               e 1 -> effacer ligne 1
                 //                               e 1, 7 -> effacer ligne 1 à 7)
-                System.out.println("WIP !!! Destruction des lignes : " + splitCommande[1]);
+                System.out.println("Destruction des lignes : " + splitCommande[1]);
                 //TODO : mechanisme de détection du type de commande
 
                 try {
                     int number = Integer.valueOf(splitCommande[1]);
                     f.delete(number);
                     // System.out.println(Arrays.toString(f.getContent()));
-                    String delimeter = "\r\n";
-                    String rsl = String.join( delimeter,  f.getContent());
-                    textShow.setText(rsl);
+                    showText();
                 } catch (Exception err) {
                     errorCommandBox();
                 }
@@ -131,12 +129,31 @@ public class EditorController {
                 //                                  ajouter à ligne 1 bla bla bla)
                 System.out.println("WIP !!! Ajout de ligne : " + splitCommande[1]);
                 //TODO : ajouter texte a ligne
+
+                try {
+                    String[] parts = splitCommande[1].split(" ");
+
+                    String texteToAdd = parts[1];
+                    int line = Integer.valueOf(parts[0]);
+                    f.append(line, texteToAdd);
+                    showText();
+                } catch (Exception err) {
+                    errorCommandBox();
+                }
                 break;
 
             case 6: // commande i -> inserer texte debut ligne (i 2 bla bla bla ->
                 //                                  insérer à ligne 2 bla bla bla)
                 System.out.println("WIP !!! Insertion de ligne : " + splitCommande[1]);
-                //TODO : insérer texte à ligne
+                try {
+                    String[] parts = splitCommande[1].split(" ");
+                    String texteToAdd = parts[1];
+                    int line = Integer.valueOf(parts[0]);
+                    f.insert(line, texteToAdd);
+                    showText();
+                } catch (Exception err) {
+                    errorCommandBox();
+                }
                 break;
 
             case 7: // commande m -> modifier texte ligne (m 2 -> voir pdf)
@@ -176,9 +193,7 @@ public class EditorController {
             System.out.println("Ouverture du fichier : " + splitCommande[1]);
             f = new File(memoryPath);
             text = f.loadFile(Paths.get(memoryPath));
-            String delimeter = "\r\n";
-            String rsl = String.join( delimeter,  text);
-            textShow.setText(rsl);
+            showText();
         } catch (Exception e) {
             errorCommandBox();
             // System.out.println("Erreur lors de l'ouverture du fichier.");
@@ -229,5 +244,11 @@ public class EditorController {
     private void errorCommandBox() {
         a.setHeaderText("Erreur, commande inconnue ou invalide");
         a.show();
+    }
+
+    private void showText() {
+        String delimeter = "\r\n";
+        String rsl = String.join(delimeter, f.getContent());
+        textShow.setText(rsl);
     }
 }
