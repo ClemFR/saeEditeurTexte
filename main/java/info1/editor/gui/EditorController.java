@@ -131,8 +131,8 @@ public class EditorController {
                 //TODO : ajouter texte a ligne
 
                 try {
-                    String[] parts = splitCommande[1].split(" ");
-
+                    String[] parts = splitCommande[1].split(" ", 2);
+                    System.out.println(parts[0] + parts[1]);
                     String texteToAdd = parts[1];
                     int line = Integer.valueOf(parts[0]);
                     f.append(line, texteToAdd);
@@ -146,7 +146,7 @@ public class EditorController {
                 //                                  insérer à ligne 2 bla bla bla)
                 System.out.println("WIP !!! Insertion de ligne : " + splitCommande[1]);
                 try {
-                    String[] parts = splitCommande[1].split(" ");
+                    String[] parts = splitCommande[1].split(" ", 2);
                     String texteToAdd = parts[1];
                     int line = Integer.valueOf(parts[0]);
                     f.insert(line, texteToAdd);
