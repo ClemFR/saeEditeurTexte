@@ -208,9 +208,9 @@ public class File {
      * @throws LineToLongException If the specified text exceeds the maximum line size
      */
     public void insert(int line, String text) {
-        if (!(line == 1 && this.currentLine == 0)) { // Create the first line if the file is empty
+        if (!(line == 0 && this.currentLine == 0)) { // Create the first line if the file is empty
 
-            if (line < 1 || line > this.currentLine) {
+            if (line < 0 || line > this.currentLine) {
                 throw new IndexOutOfBoundsException("Index out of bounds");
             }
             if (this.currentLine == MAX_LINES) {
@@ -220,13 +220,13 @@ public class File {
                 throw new LineToLongException("75 char max");
             }
 
-            for (int i = this.currentLine - 1; i > line - 2; i--) {
-                this.content[i + 1] = this.content[i];
+            for (int i = this.currentLine; i > line; i--) {
+                this.content[i] = this.content[i - 1];
             }
         }
 
 
-        this.content[line - 1] = text;
+        this.content[line] = text;
         this.currentLine++;
     }
 
@@ -263,7 +263,7 @@ public class File {
         }
 
         if (locationToPaste == -1) {
-            this.insert(1, this.content[lineToCopy]);
+            this.insert(0, this.content[lineToCopy]);
         } else {
             this.append(locationToPaste, this.content[lineToCopy]);
         }
@@ -295,7 +295,7 @@ public class File {
         if (locationToPaste == -1) {
             // Revert paste to rectify the order of the lines
             for (int i = linesToCopy.length-1 ; i >= 0 ; i--) {
-                this.insert(1, linesToCopy[i]);
+                this.insert(0, linesToCopy[i]);
             }
         } else {
             // Revert paste to rectify the order of the lines
@@ -328,7 +328,7 @@ public class File {
 
         if (locationToPaste == -1) {
             delete(lineToCopy);
-            insert(1, lineToMove);
+            insert(0, lineToMove);
         } else {
             delete(lineToCopy);
             append(locationToPaste, lineToMove);
@@ -368,7 +368,7 @@ public class File {
         if (locationToPaste <= -1) {
             // Revert paste to rectify the order of the lines
             for (int i = linesToCopy.length-1 ; i >= 0 ; i--) {
-                this.insert(1, linesToCopy[i]);
+                this.insert(0, linesToCopy[i]);
             }
         } else {
             // Revert paste to rectify the order of the lines

@@ -14,7 +14,7 @@ public class TestInsert {
         /* Insertion d'une ligne à un index invalide */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
-            f.insert(0, "azerty");
+            f.insert(-1, "azerty");
             testOk &= false;
         } catch (IndexOutOfBoundsException expectedError) {
             testOk &= true;
@@ -23,7 +23,7 @@ public class TestInsert {
         /* Creation de la premiere ligne d'un fichier vierge */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierVide.txt");
-            f.insert(1, "azerty");
+            f.insert(0, "azerty");
             testOk &= true;
         } catch (IndexOutOfBoundsException expectedError) {
             testOk &= false;
@@ -32,7 +32,7 @@ public class TestInsert {
         /* Insertion d'une ligne à un index valide */
         try {
             File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
-            f.insert(1, "azerty");
+            f.insert(0, "azerty");
             testOk &= true;
         } catch (IndexOutOfBoundsException expectedError) {
             testOk &= false;
