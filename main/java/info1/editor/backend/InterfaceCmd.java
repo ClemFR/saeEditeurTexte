@@ -14,11 +14,9 @@ public class InterfaceCmd {
 
         System.out.print("Entrez une commande : ");
         commande = scanner.nextLine();
-        try {
-            analyserCommande(commande);
-        } catch (Exception e) {
-            System.err.println("Erreur, commande inconnue");
-        }
+
+        analyserCommande(commande);
+
 
 
     }

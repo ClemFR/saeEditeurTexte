@@ -252,7 +252,7 @@ public class EditorController {
         try {
             System.out.println("Ouverture du fichier : " + splitCommande[1]);
             f = new File(memoryPath);
-            text = f.loadFile(Paths.get(memoryPath));
+            // text = f.loadFile(Paths.get(memoryPath));
             showText();
         } catch (Exception e) {
             errorCommandBox();

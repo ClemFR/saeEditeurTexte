@@ -2,10 +2,15 @@ package info1.editor.tests;
 
 import info1.editor.tests.file.*;
 
+
+/**
+ * Tests unitaires de la classe {@link info1.editor.backend.File}
+ */
 public class StartTest {
+
     /**
-     * Debut du chemin menant au projet, utilisé pour construire le chemin de chaque fichier.
-     * Il faut spécifier le dossier contanant le dossier "src"
+     * Lancement des tests unitaires
+     * @param args non utilisé
      */
     public static void main(String[] args) {
 
@@ -58,15 +63,24 @@ public class StartTest {
         }
 
         if (TestMoveInt.launch()) {
-            System.out.println("Test MovetInt OK");
+
+            System.out.println("Test MoveInt OK");
         } else {
             System.out.println("Test MoveInt ECHEC");
         }
 
         if (TestMoveIntInt.launch()) {
-            System.out.println("Test MovetIntInt OK");
+
+            System.out.println("Test MoveIntInt OK");
         } else {
             System.out.println("Test MoveIntInt ECHEC");
         }
+
+        if (TestSave.launch()) {
+            System.out.println("Test Save OK");
+        } else {
+            System.out.println("Test Save ECHEC");
+        }
     }
 }
+

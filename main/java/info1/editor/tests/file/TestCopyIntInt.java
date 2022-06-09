@@ -1,4 +1,3 @@
-
 package info1.editor.tests.file;
 
 import info1.editor.backend.File;
@@ -74,3 +73,4 @@ public class TestCopyIntInt {
         return testOk;
     }
 }
+
