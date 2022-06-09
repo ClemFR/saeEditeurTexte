@@ -1,7 +1,7 @@
 package info1.editor.tests.file;
 
 import info1.editor.backend.File;
-import info1.editor.exception.FileNotFoundException;
+import info1.editor.exception.FileLoadingException;
 
 public class TestDeleteInt {
 
@@ -61,60 +61,43 @@ public class TestDeleteInt {
 
         /* Suppression d'une ligne en debut de fichier pour voir si toutes les lignes sont
          * bien décalés */
-        try {
-            File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
-            f.delete(0);
-            String[] result = f.getContent();
-            for (int i = 0 ; i < expectedResults[0].length - 1 ; i++) {
-                testOk &= result[i].equals(expectedResults[0][i]);
-            }
-            //test null lines not written in tests array
-            for (int i = expectedResults[0].length - 1; i < result.length ; i++) {
-                testOk &= result[i] == null;
-            }
-        } catch (FileNotFoundException e) {
-            System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
-            e.printStackTrace();
+        File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
+        f.delete(0);
+        String[] result = f.getContent();
+        for (int i = 0 ; i < expectedResults[0].length - 1 ; i++) {
+            testOk &= result[i].equals(expectedResults[0][i]);
+        }
+        //test null lines not written in tests array
+        for (int i = expectedResults[0].length - 1; i < result.length ; i++) {
+            testOk &= result[i] == null;
         }
 
         /* Suppression d'une ligne en fin de fichier pour voir si elle se transforme bien
          * en null */
-        try {
-            File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierDernieresLignes.txt");
-            f.delete(99);
-            for (int i = 0 ; i < 82 ; i++) {
-                testOk &= f.getContent()[i].equals("");
-            }
-            for (int i = 82 ; i < 99 ; i++) {
-                testOk &= f.getContent()[i].equals(expectedResults[1][i-82]);
-            }
-            testOk &= f.getContent()[99] == null;
-
-        } catch (FileNotFoundException e) {
-            System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
-            e.printStackTrace();
+        f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierDernieresLignes.txt");
+        f.delete(99);
+        for (int i = 0 ; i < 82 ; i++) {
+            testOk &= f.getContent()[i].equals("");
         }
+        for (int i = 82 ; i < 99 ; i++) {
+            testOk &= f.getContent()[i].equals(expectedResults[1][i-82]);
+        }
+        testOk &= f.getContent()[99] == null;
 
         /* Tentative de suppression d'une ligne à un indice qui n'existe pas (negatif) */
         try {
-            File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
+            f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             f.delete(-1);
             testOk &= false;
-        } catch (FileNotFoundException e) {
-            System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
-            e.printStackTrace();
         } catch (IndexOutOfBoundsException expectedError) {
             testOk &= true;
         }
 
         /* Tentative de suppression d'une ligne à un indice qui n'existe pas (positif) */
         try {
-            File f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
+            f = new File("src/main/java/info1/editor/tests/fichierexemple/testFichierOk.txt");
             f.delete(100);
             testOk &= false;
-        } catch (FileNotFoundException e) {
-            System.err.println("Echec du test suite à une erreur dans le chargement du fichier");
-            e.printStackTrace();
         } catch (IndexOutOfBoundsException expectedError) {
             testOk &= true;
         }

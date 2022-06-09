@@ -1,6 +1,6 @@
 package info1.editor.backend;
 
-import info1.editor.exception.FileNotFoundException;
+import info1.editor.exception.FileLoadingException;
 import info1.editor.exception.LineToLongException;
 
 import java.io.BufferedReader;
@@ -8,7 +8,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class File {
@@ -25,21 +27,32 @@ public class File {
     /**
      * Creates a new file with the given path.
      * @param path the path of the file to create
-     * @throws FileNotFoundException if the file cannot be loaded
+     * @throws FileLoadingException if the file cannot be loaded
      */
     public File(String path) {
 
         java.io.File file = new java.io.File(path);
         this.path = Path.of(path);
 
-        if (!file.exists()) {
-            throw new FileNotFoundException("File not found");
+        try {
+            Paths.get(path);
+        } catch (InvalidPathException | NullPointerException ex) {
+            throw new FileLoadingException("The file cannot be loaded");
         }
+
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new FileLoadingException("Impossible de créer le fichier " + path);
+            }
+        }
+
         try {
             this.content = loadFile(this.path);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FileNotFoundException("File not found");
+            throw new FileLoadingException("File not found");
         }
     }
 
@@ -80,15 +93,35 @@ public class File {
         return lines;
     }
 
-    //TODO : ajouter les tests
+    /**
+     * Save the current file to the given path at the constructor.
+     * @throws IOException if the file cannot be saved
+     */
     public void save() throws IOException {
-        PrintWriter newFile = new PrintWriter(path.toString());
+        save(this.path);
+    }
 
-        // Print first line outside so the last line is not just a new blank line
-        newFile.print(content[0]);
-        for (int i = 1 ; i < content.length ; i++) {
-            newFile.print("\n" + content[i]);
+    /**
+     * Save the current file to the given path.
+     * @param file the path of the file to save
+     * @throws IOException if the file cannot be saved
+     */
+    public void save(Path file) throws IOException {
+
+        if (file.toFile().exists()) {
+            Files.delete(file);
         }
+
+        PrintWriter newFile = new PrintWriter(file.toFile());
+
+        if (this.content[0] != null) {
+            // Print first line outside so the last line is not just a new blank line
+            newFile.print(content[0]);
+            for (int i = 1 ; i < currentLine ; i++) {
+                newFile.print("\n" + content[i]);
+            }
+        }
+
         newFile.close();
     }
 
