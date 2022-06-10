@@ -25,7 +25,7 @@ public class EditorController {
     @FXML
     private TextArea textShow;
     @FXML
-    public static TextField textCommand;
+    public TextField textCommand;
 
     public String stockCommand;
 
@@ -255,6 +255,7 @@ public class EditorController {
             // text = f.loadFile(Paths.get(memoryPath));
             showText();
         } catch (Exception e) {
+            e.printStackTrace();
             errorCommandBox();
             System.out.println("Erreur WriteRead()");
             // System.out.println("Erreur lors de l'ouverture du fichier.");
@@ -316,7 +317,10 @@ public class EditorController {
             }
             toPrint += f.getContent()[i] + "\n";
         }
-        toPrint = toPrint.substring(0, toPrint.length()-1);
+        // Evite crash si fichier vide
+        if (toPrint.length() > 0) {
+            toPrint = toPrint.substring(0, toPrint.length()-1);
+        }
         textShow.setText(toPrint);
     }
 }
